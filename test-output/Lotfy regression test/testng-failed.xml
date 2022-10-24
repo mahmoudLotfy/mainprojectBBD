@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Lotfy regression test]">
+  <parameter name="browser" value="headless"/>
+  <test thread-count="5" name="lotfy regression(failed)">
+    <classes>
+      <class name="tests.UserRegistrationWithDDTAndPropertiesFile">
+        <methods>
+          <include name="setUpClass"/>
+          <include name="startDriver"/>
+          <include name="RegisteredUserCanLogout"/>
+          <include name="RegisteredUserCanLogin"/>
+          <include name="UserCanRegisterSuccssfully"/>
+          <include name="tearDownClass"/>
+          <include name="stopDriver"/>
+          <include name="screenshotOnFailure"/>
+        </methods>
+      </class> <!-- tests.UserRegistrationWithDDTAndPropertiesFile -->
+      <class name="tests.ProductHoverMenuTest">
+        <methods>
+          <include name="setUpClass"/>
+          <include name="startDriver"/>
+          <include name="stopDriver"/>
+          <include name="tearDownClass"/>
+          <include name="UserCanSelectSubCategoryFromMainMenu"/>
+          <include name="screenshotOnFailure"/>
+        </methods>
+      </class> <!-- tests.ProductHoverMenuTest -->
+      <class name="tests.ContactUsTest">
+        <methods>
+          <include name="setUpClass"/>
+          <include name="startDriver"/>
+          <include name="tearDownClass"/>
+          <include name="stopDriver"/>
+          <include name="screenshotOnFailure"/>
+          <include name="UserCanUseContactUs"/>
+        </methods>
+      </class> <!-- tests.ContactUsTest -->
+    </classes>
+  </test> <!-- lotfy regression(failed) -->
+</suite> <!-- Failed suite [Lotfy regression test] -->
