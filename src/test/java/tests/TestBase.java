@@ -8,6 +8,8 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
@@ -62,7 +64,7 @@ public class TestBase extends AbstractTestNGCucumberTests {
 	
 	@BeforeSuite
 	@Parameters ({"browser"})
-	public  void  startDriver(@Optional("chrome") String browserName) {
+	public  void  startDriver(@Optional("headless") String browserName) {
 		if (browserName.equalsIgnoreCase("chrome"))
 		{
 			System.setProperty("webdriver.chrome.driver", 
@@ -85,20 +87,38 @@ public class TestBase extends AbstractTestNGCucumberTests {
 			 driver = new EdgeDriver();
 		}
 			
-		/*{	DesiredCapabilities caps = new DesiredCapabilities();
-		caps.setJavascriptEnabled(true);
-		caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
-				System.getProperty("user.dir")+"\\drivers\\phantomjs.exe");
-				String[] phantomjsArgs = ("--web-security=no","--ignore-ssl-errors=yes");
-				caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_AROS,phantomjsArgs);
-			 driver = new PhantomJSDriver(caps);
-			 */
 		
-		else if (browserName.equalsIgnoreCase("edge"))
+		else if (browserName.equalsIgnoreCase("ie"))
 		{
 			System.setProperty("webdriver.edge.driver", System.getProperty("user.dir")+"\\drivers\\msedgedriver.exe");
 			 driver = new InternetExplorerDriver();
 		}
+		
+		// headless browser testing
+		else if(browserName.equalsIgnoreCase("headless")) 
+				{
+					DesiredCapabilities caps = new DesiredCapabilities(); 
+					caps.setJavascriptEnabled(true);
+					caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
+							System.getProperty("user.dir")+"\\drivers\\phantomjs.exe");
+					String[] phantomJsArgs = {"--web-security=no","--ignore-ssl-errors=yes"};
+					caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, phantomJsArgs);
+					driver = new PhantomJSDriver(caps); 
+				}
+
+		else if (browserName.equalsIgnoreCase("chrome-headless")) 
+				{
+					System.setProperty("webdriver.chrome.driver", 
+							System.getProperty("user.dir")+"/drivers/chromedriver.exe");
+					ChromeOptions options = new ChromeOptions(); 
+					options.addArguments("--headless"); 
+					options.addArguments("--window-size=1920,1080"); 
+					driver = new ChromeDriver(options); 
+				}
+
+		else if (browserName.equalsIgnoreCase("safari")) {
+					driver = new SafariDriver(); 
+				}
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
 		driver.navigate().to("http://demo.nopcommerce.com/");
@@ -109,7 +129,7 @@ public class TestBase extends AbstractTestNGCucumberTests {
 	public void stopDriver()
 
 	{
-		//driver.quit();
+		driver.quit();
 	}
 	// take screenshot when test case fail and add it in the Screenshot folder
 		@AfterMethod
